@@ -3,40 +3,59 @@ from typing import List
 
 
 def signup():
-    status = input("Hi, are you a (f)reelancer or a (c)orporation?" + "\n")
+    status = input("Hi, are you a (f)reelancer or a (c)lient?" + "\n")
     if status == "f":
         username = input("Enter freelancer username: ")
-        email = input("Enter email: ")
+        email = input("Enter Email: ")
+        id=input("Enter your id : ")
+        phone_number=input("Enter your Phone Number : ")
+        national_id=input("Enter Your National Id : ")
         password = input("Enter password: ")
+
         while 1:
             conf_pwd = input("Confirm password: ")
             if conf_pwd == password:
                 enc = conf_pwd.encode()
                 hash1 = hashlib.md5(enc).hexdigest()
-                with open("usernames.txt", "a")as f:
+                with open("freelancers.txt", "a")as f:
                     f.write(username + "\n")
                     f.close()
                 with open(username+".txt", "w")as f:
                     f.write(username + "\n")
                     f.write(hash1)
                 f.close()
+                with open(username+"_profile.txt","w") as f:
+                    f.write(username + "\n")
+                    f.write(hash1+"\n")
+                    f.write(email + "\n")
+                    f.write(id + "\n")
+                    f.write(phone_number + "\n")
+                    f.write(national_id + "\n")
+                f.close()
                 print("You have registered successfully!")
                 break
             else:
                 print("Password is not same as above, please input again. \n")
     elif status == "c":
-        username = input("Enter corporation username: ")
-        email = input("Enter email: ")
-        password = input("Enter password: ")
+        username = input("Enter Client username: ")
+        email = input("Enter Email: ")
+        id = input("Enter your id : ")
+        password = input("Enter Password: ")
         while 1:
             conf_pwd = input("Confirm password: ")
             if conf_pwd == password:
                 enc = conf_pwd.encode()
                 hash1 = hashlib.md5(enc).hexdigest()
-                with open("corp_credentials.txt", "w") as f:
+                with open("client.txt", "w") as f:
                     f.write(username + "\n")
                     f.write(hash1)
                 f.close()
+                with open(username+"_profile.txt","w") as f:
+                    f.write(username + "\n")
+                    f.write(hash1+"\n")
+                    f.write(id + "\n")
+                    f.write(email + "\n")
+
                 print("You have registered successfully!")
                 break
             else:
@@ -46,7 +65,7 @@ def signup():
 def login():
     attempts = 4
     global f_username
-    status = input("Are you a (f)reelancer or a (c)orporation?" + "\n")
+    status = input("Are you a (f)reelancer or a (c)lient ?" + "\n")
     if status == "f":
         while attempts >= 0:
             f_username = input("Enter username: ")
@@ -73,7 +92,7 @@ def login():
             password = input("Enter password: ")
             auth = password.encode()
             auth_hash = hashlib.md5(auth).hexdigest()
-            with open("corp_credentials.txt", "r") as f:
+            with open("client.txt", "r") as f:
                 stored_corp_username, stored_corp_password = f.read().split("\n")
             f.close()
             if username == stored_corp_username and auth_hash == stored_corp_password:
@@ -91,7 +110,7 @@ def login():
                     break
 
 def corp_page():
-    with open("corp_credentials.txt", "r") as f:
+    with open("client.txt", "r") as f:
         stored_username, stored_password= f.read().split("\n")
         f.close()
         username = stored_username
@@ -128,7 +147,7 @@ def corp_page():
 
 
         elif corp_chosen == "v":
-            with open("usernames.txt", "r")as f:
+            with open("freelancers.txt", "r")as f:
                 usernames = f.readlines()
                 how_many_usernames = len(f.readlines())
                 f.close()
@@ -193,7 +212,7 @@ def freelancer_page():
             with open(applicant_description_file, "w")as f:
                 f.write(applicant_description + "\n")
                 f.close()
-            i = int(input("Please enter job's number " + "\n"))
+            i = int(input("Please enter job's ID " + "\n"))
             i_real = i-1
             job_applied_username = username + "_job_applied.txt"
             with open("jobs.txt", "r")as f:
