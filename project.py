@@ -1,5 +1,4 @@
 import hashlib
-from typing import List
 
 
 def signup():                                                             # if not have account  before
@@ -126,15 +125,9 @@ def corp_page():
                 id = input("Enter job id: \n")
                 required_skills =input ("Enter required skills: \n")
                 job_describ =input("Enter job description: \n ")
-                with open("jobs.txt", "r")as f:
-                    xlines = len(f.readlines())
-                    f.close()
-                if xlines == 0:
-                    f = open("Jobs.txt","w")
-                    f.write(title +"\n")
-                else:
-                    f = open("jobs.txt", "a")
+                with open("jobs.txt", "a")as f:
                     f.write(title + "\n")
+                    f.close()
 
                 file_Name = title + ".txt"
                 x = open(file_Name, "a")
@@ -149,7 +142,6 @@ def corp_page():
         elif corp_chosen == "v":
             with open("freelancers.txt", "r")as f:
                 usernames = f.readlines()
-                how_many_usernames = len(f.readlines())
                 f.close()
             print("Hi, these applicants have applied to a job: \n")
             print(*usernames, sep =",")
@@ -182,7 +174,7 @@ def corp_page():
 
 
 def freelancer_page():
-
+    global job_applied
     global stored_f_username
     with open(f_username+".txt", "r") as f:
         stored_f_username, stored_password = f.read().split("\n")
@@ -208,14 +200,9 @@ def freelancer_page():
             with open(applicant_description_file, "w")as f:
                 f.write(applicant_description + "\n")
                 f.close()
-            i = int(input("Please enter job's ID " + "\n"))
-            i_real = i-1
             job_applied_username = username + "_job_applied.txt"
-            with open("jobs.txt", "r")as f:
-                job_applied_name = f.readlines()[i_real]
-                f.close()
             with open(job_applied_username, "w")as f:
-                f.write(job_applied_name + "\n")
+                f.write(job_applied + "\n")
                 f.close()
             print("Job request sent successfully !")
             break
