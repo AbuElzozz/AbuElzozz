@@ -14,7 +14,7 @@ def signup():                                                             # if n
         while 1:                                                          # confirm if same two password Entered
             conf_pwd = input("Confirm password: ")
             if conf_pwd == password:
-                enc = conf_pwd.encode()                               # change password from number to encrypation hexanumber
+                enc = conf_pwd.encode()                         # change password from number to encrypation hexanumber
                 hash1 = hashlib.md5(enc).hexdigest()
                 with open("freelancers.txt", "a")as f:
                     f.write(username + "\n")
@@ -96,7 +96,7 @@ def login():
             f.close()
             if username == stored_c_username and auth_hash == stored_c_password:
                 print("Logged in Successfully!")
-                corp_page()
+                client_page()
                 break
             else:
                 print("Login failed!, you have ",attempts," attempts to try again\n")
@@ -108,7 +108,7 @@ def login():
                 else:
                     break
 
-def corp_page():
+def client_page():
     with open("client.txt", "r") as f:     #open user file to get his name and use it in converstion after
         stored_username, stored_password= f.read().split("\n")
         f.close()
@@ -181,7 +181,7 @@ def freelancer_page():
         f.close()
         username = stored_f_username
         print("Hi " + username + " there are some jobs available. Do you want to see them?\n")
-        viewjobs = input("(y)es, or (n)o\n")
+        viewjobs = input("(y)es, or (n)o \n")
         if viewjobs == "y":
             file=open("jobs.txt","r")
             print(file.read())
@@ -195,7 +195,7 @@ def freelancer_page():
             pass
         job_apply = input("Do you want to apply for a (j)ob? or do you want to see job (s)tatus?" + "\n")
         while job_apply == "j":
-            applicant_description = input("Please inter your bio, skills, and social numbers: " + "\n")
+            applicant_description = input("Please inter your bio, job id, and freelancer id: " + "\n")
             applicant_description_file = username + "_description.txt"
             with open(applicant_description_file, "w")as f:
                 f.write(applicant_description + "\n")
