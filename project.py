@@ -2,8 +2,8 @@ import hashlib
 from typing import List
 
 
-def signup():
-    status = input("Hi, are you a (f)reelancer or a (c)lient?" + "\n")
+def signup():                                                             # if not have account  before
+    status = input("Hi, are you a (f)reelancer or a (c)lient?" + "\n")    # Check if freelancer or client to direct for each page
     if status == "f":
         username = input("Enter freelancer username: ")
         email = input("Enter Email: ")
@@ -12,10 +12,10 @@ def signup():
         national_id=input("Enter Your National Id : ")
         password = input("Enter password: ")
 
-        while 1:
+        while 1:                                                          # confirm if same two password Entered
             conf_pwd = input("Confirm password: ")
             if conf_pwd == password:
-                enc = conf_pwd.encode()
+                enc = conf_pwd.encode()                               # change password from number to encrypation hexanumber
                 hash1 = hashlib.md5(enc).hexdigest()
                 with open("freelancers.txt", "a")as f:
                     f.write(username + "\n")
@@ -63,7 +63,7 @@ def signup():
 
 
 def login():
-    attempts = 4
+    attempts = 4                # idea if enter username or password 5 times wrong will switch to sign up page again
     global f_username
     status = input("Are you a (f)reelancer or a (c)lient ?" + "\n")
     if status == "f":
@@ -72,7 +72,7 @@ def login():
             password = input("Enter password: ")
             auth = password.encode()
             auth_hash = hashlib.md5(auth).hexdigest()
-            with open(f_username+".txt", "r") as f:
+            with open(f_username+".txt", "r") as f:                # open user_file to take username and passowrd in which taken in signup page to confirm  registertion
                 stored_f_username, stored_password = f.read().split("\n")
             f.close()
             if f_username == stored_f_username and auth_hash == stored_password:
@@ -92,10 +92,10 @@ def login():
             password = input("Enter password: ")
             auth = password.encode()
             auth_hash = hashlib.md5(auth).hexdigest()
-            with open("client.txt", "r") as f:
-                stored_corp_username, stored_corp_password = f.read().split("\n")
+            with open("client.txt", "r") as f:              # open user_file to take username and passowrd in which taken in signup page to confirm  registertion
+                stored_c_username, stored_c_password = f.read().split("\n")
             f.close()
-            if username == stored_corp_username and auth_hash == stored_corp_password:
+            if username == stored_c_username and auth_hash == stored_c_password:
                 print("Logged in Successfully!")
                 corp_page()
                 break
@@ -110,7 +110,7 @@ def login():
                     break
 
 def corp_page():
-    with open("client.txt", "r") as f:
+    with open("client.txt", "r") as f:     #open user file to get his name and use it in converstion after
         stored_username, stored_password= f.read().split("\n")
         f.close()
         username = stored_username
@@ -152,7 +152,7 @@ def corp_page():
                 how_many_usernames = len(f.readlines())
                 f.close()
             print("Hi, these applicants have applied to a job: \n")
-            print(*usernames, sep =", ")
+            print(*usernames, sep =",")
             username_chosen = input("Which one do you want to see their application?")
             user_job_applied = username_chosen + "_job_applied.txt"
             user_description = username_chosen + "_description.txt"
@@ -182,12 +182,8 @@ def corp_page():
 
 
 def freelancer_page():
-    zero = 0
-    global stored_f_username
-    counter = 0
-    check_job = 0
-    lines = 0
 
+    global stored_f_username
     with open(f_username+".txt", "r") as f:
         stored_f_username, stored_password = f.read().split("\n")
         f.close()
